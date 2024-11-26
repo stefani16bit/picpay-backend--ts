@@ -1,29 +1,14 @@
 # Desafio Back-end PicPay
 
-Primeiramente, obrigado pelo seu interesse em trabalhar na melhor plataforma de pagamentos do mundo!
-Abaixo você encontrará todos as informações necessárias para iniciar o seu teste.
+Estou fazendo esse projeto como conteúdo de estudo e portfólio.
 
 ## Avisos antes de começar
 
 - Leia com atenção este documento todo e tente seguir ao **máximo** as instruções;
 - Crie um repositório no seu GitHub **sem citar nada relacionado ao PicPay**;
 - Faça seus commits no seu repositório;
-- Envie o link do seu repositório para o email **do recrutador responsável**;
-- Você poderá consultar o Google, Stackoverflow ou algum projeto particular na sua máquina;
 - Dê uma olhada nos [Materiais úteis](#materiais-úteis);
 - Dê uma olhada em como será a [entrevista](#para-o-dia-da-entrevista-técnica);
-- Fique à vontade para perguntar qualquer dúvida aos recrutadores;
-- Fique tranquilo, respire, assim como você, também já passamos por essa etapa. Boa sorte! :)
-
-_Corpo do Email com o link do repositório do desafio_
-
-> Seu Nome
->
-> Nome do recrutador
->
-> Link do repositório
->
-> Link do Linkedin
 
 ### Sobre o ambiente da aplicação:
 
@@ -38,13 +23,6 @@ _Corpo do Email com o link do repositório do desafio_
   resolver problemas;
 
 > Valorizamos uma boa estrutura de containeres criada por você.
-
-## Para o dia da entrevista técnica
-
-Na data marcada pelo recrutador tenha sua aplicação rodando na sua máquina local para execução dos testes e para nos
-mostrar os pontos desenvolvidos e possíveis questionamentos.
-Faremos um code review junto contigo como se você já fosse do nosso time :heart:, você poderá explicar o que você
-pensou, como arquitetou e como pode evoluir o projeto.
 
 ## Objetivo: PicPay Simplificado
 
@@ -65,17 +43,15 @@ A seguir estão algumas regras de negócio que são importantes para o funcionam
 
 - Validar se o usuário tem saldo antes da transferência;
 
-- Antes de finalizar a transferência, deve-se consultar um serviço autorizador externo, use este mock
-  [https://util.devi.tools/api/v2/authorize](https://util.devi.tools/api/v2/authorize) para simular o serviço
-  utilizando o verbo `GET`;
+- Antes de finalizar a transferência, deve-se consultar um serviço autorizador externo, use este mock para
+  simular (https://run.mocky.io/v3/5794d450-d2e2-4412-8131-73d0293ac1cc);
 
 - A operação de transferência deve ser uma transação (ou seja, revertida em qualquer caso de inconsistência) e o
   dinheiro deve voltar para a carteira do usuário que envia;
 
 - No recebimento de pagamento, o usuário ou lojista precisa receber notificação (envio de email, sms) enviada por um
-  serviço de terceiro e eventualmente este serviço pode estar indisponível/instável. Use este mock
-  [https://util.devi.tools/api/v1/notify)](https://util.devi.tools/api/v1/notify)) para simular o envio da notificação
-  utilizando o verbo `POST`;
+  serviço de terceiro e eventualmente este serviço pode estar indisponível/instável. Use este mock para simular o
+  envio (https://run.mocky.io/v3/54dc2cf1-3add-45b5-b5a9-6bf7e7f1f4a6);
 
 - Este serviço deve ser RESTFul.
 
@@ -178,6 +154,6 @@ docker run -it --rm -v $(pwd):/project -w /project jakzal/phpqa phpmd app text c
 - https://www.php-fig.org/psr/psr-12/
 - https://www.atlassian.com/continuous-delivery/software-testing/types-of-software-testing
 - https://github.com/exakat/php-static-analysis-tools
-- https://martinfowler.com/articles/microservices.html
+- https://martinfowler.com/articles/microservices.htm
 - https://docs.guzzlephp.org/en/stable/request-options.html
 - https://www.devmedia.com.br/rest-tutorial/28912
