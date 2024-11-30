@@ -3,6 +3,8 @@ import { Component, Container } from "../../container";
 import { UserService } from "../../services/userService";
 import { GetUserResponse } from "./GetUserResponse";
 import { CreateUserResponse } from "./CreateUserResponse";
+import { CreateUserRequest } from "./CreateUserRequest";
+import { GetUserRequest } from "./GetUserRequest";
 
 export class UserController implements Component<UserController> {
 	service!: UserService;
@@ -14,12 +16,14 @@ export class UserController implements Component<UserController> {
 	}
 
 	async getUser(req: Request, res: Response) {
-		if (req.params.id === undefined) {
+		const id = req.params.id
+		if (id === undefined) {
 			res.status(400).json({ message: "Bad request" });
 			return;
 		}
-
-		const response = await this.service.getUser(parseInt(req.params.id, 10));
+	
+		const request = new GetUserRequest(parseInt(id, 10));
+		const response = await this.service.getUser(request);
 
 		if (response instanceof Error) {
 			res.status(404).json({ message: response.message });
@@ -29,15 +33,15 @@ export class UserController implements Component<UserController> {
 	}
 
 	async createUser(req: Request, res: Response) {
-		const first_name = req.body.first_name
-		if (first_name === undefined) {
-			res.status(400).json({ message: "Bad request, missing first_name" });
+		const firstName = req.body.firstName
+		if (firstName === undefined) {
+			res.status(400).json({ message: "Bad request, missing firstName" });
 			return;
 		}
 
-		const last_name = req.body.last_name
-		if (last_name === undefined) {
-			res.status(400).json({ message: "Bad request, missing last_name" });
+		const lastName = req.body.lastName
+		if (lastName === undefined) {
+			res.status(400).json({ message: "Bad request, missing lastName" });
 			return;
 		}
 
@@ -47,9 +51,9 @@ export class UserController implements Component<UserController> {
 			return;
 		}
 
-		const user_type = req.body.user_type
-		if (user_type === undefined) {
-			res.status(400).json({ message: "Bad request, missing user_type" });
+		const userType = req.body.userType
+		if (userType === undefined) {
+			res.status(400).json({ message: "Bad request, missing userType" });
 			return;
 		}
 
@@ -65,7 +69,8 @@ export class UserController implements Component<UserController> {
 			return;
 		}
 
-		const response = await this.service.createUser(first_name, last_name, email, user_type, password, CPF_CNPJ)
+		const request = new CreateUserRequest(firstName, lastName, email, userType, password, CPF_CNPJ)
+		const response = await this.service.createUser(request)
 
 		if (response instanceof Error) {
 			res.status(404).json({ message: response.message });
