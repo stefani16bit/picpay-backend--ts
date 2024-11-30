@@ -1,4 +1,6 @@
 import { Component, Container } from "../container";
+import { CreateUserRequest } from "../controllers/users/CreateUserRequest";
+import { GetUserRequest } from "../controllers/users/GetUserRequest";
 import { MySQLClient } from "../database/mysqlClient";
 import { User, UserSchema } from "../models/userModel";
 
@@ -11,9 +13,9 @@ export class UserRepository implements Component<UserRepository> {
 		this.database = this.container.resolve<MySQLClient>("mysqlClient");
 	}
 
-	getUser(userId: number): Promise<User | Error> {
+	getUser(request: GetUserRequest): Promise<User | Error> {
 		return new Promise((resolve, reject) => {
-			this.database.connection.query("SELECT * FROM users WHERE id = ?", [userId], (err, results) => {
+			this.database.connection.query("SELECT * FROM users WHERE id = ?", [request.id], (err, results) => {
 				if (err) {
 					return reject(new Error(`Error fetching user: ${err.message}`));
 				}
@@ -28,17 +30,25 @@ export class UserRepository implements Component<UserRepository> {
 		});
 	}
 
-	createUser(first_name: string, last_name: string, email: string, user_type: string, password: string, CPF_CNPJ: string): Promise<User | Error> {
+	createUser(request: CreateUserRequest): Promise<User | Error> {
 		return new Promise((resolve, reject) => {
 			this.database.connection.query(
 				"INSERT INTO users(user_type, first_name, last_name, email, password, CPF_CNPJ) VALUES (?, ?, ?, ?, ?, ?)",
-				[user_type, first_name, last_name, email, password, CPF_CNPJ],
+				[request.userType, request.firstName, request.lastName, request.email, request.password, request.CPF_CNPJ],
 				(err, results) => {
 					if (err) {
 						return reject(new Error(`Error creating user: ${err.message}`));
 					}
 
-					const response = User.fromDatabase({ id: results.insertId, user_type, first_name, last_name, email, password, CPF_CNPJ } as UserSchema);
+					const response = User.fromDatabase({
+						id: results.insertId,
+						user_type: request.userType,
+						first_name: request.firstName,
+						last_name: request.lastName,
+						email: request.email,
+						password: request.password,
+						CPF_CNPJ: request.CPF_CNPJ,
+					} as UserSchema);
 					resolve(response);
 				}
 			);
