@@ -1,3 +1,4 @@
+import bcryptjs from 'bcryptjs';
 import { Component, Container } from "../container";
 import { CreateUserRequest } from "../controllers/users/CreateUserRequest";
 import { GetUserRequest } from "../controllers/users/GetUserRequest";
@@ -14,12 +15,12 @@ export class UserService implements Component<UserService> {
 		this.repository = this.container.resolve<UserRepository>("userRepository");
 	}
 
-	async getUser(request: GetUserRequest): Promise<User | Error> {
+	async getUserByID(request: GetUserRequest): Promise<User | Error> {
 		if (isNaN(request.id)) {
 			return Promise.reject(new Error("Invalid user ID"));
 		}
 
-		return await this.repository.getUser(request).catch((err: Error) => err);
+		return await this.repository.getUserByID(request).catch((err: Error) => err);
 	}
 	
 	async createUser(request: CreateUserRequest): Promise<User | Error> {
@@ -42,14 +43,13 @@ export class UserService implements Component<UserService> {
 		if(!UserParamsValidators.validateCPF_CNPJ(request.CPF_CNPJ)) {
 			return new Error("Tipo de CPF/CNPJ inválido.")		
 		}
-		/**
-		 * first_name/last_name: quantidade de char, se aceita apenas letras
-		 * email: regex de email
-		 * user_type: payee/payer
-		 * password: quantidade de char, validar senha forte, e caracteres permitidos
-		 * CPF_CNPJ: regex para cpf_cnpj e calculo para valida cpf ou cnpj
-		 */
-		
+		if (!UserParamsValidators.validatePassowrd(request.password)) {
+			return new Error("Senha inválida. A senha deve ser forte.");
+		}
+
+		const hashedPassword = await bcryptjs.hash(request.password, 10);
+		request.password = hashedPassword;
+					
 		return await this.repository.createUser(request).catch((err: Error) => err);
 	}
 }
