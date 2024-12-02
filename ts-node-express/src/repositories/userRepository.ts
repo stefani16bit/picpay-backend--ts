@@ -13,7 +13,7 @@ export class UserRepository implements Component<UserRepository> {
 		this.database = this.container.resolve<MySQLClient>("mysqlClient");
 	}
 
-	getUser(request: GetUserRequest): Promise<User | Error> {
+	getUserByID(request: GetUserRequest): Promise<User | Error> {
 		return new Promise((resolve, reject) => {
 			this.database.connection.query("SELECT * FROM users WHERE id = ?", [request.id], (err, results) => {
 				if (err) {

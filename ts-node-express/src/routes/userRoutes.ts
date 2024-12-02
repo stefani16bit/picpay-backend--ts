@@ -9,7 +9,7 @@ export class UserRoutes implements Component<UserRoutes> {
 		const app = this.container.resolve<Express>("app");
 		const controller = this.container.resolve<UserController>("userController");
 
-		app.get("/users/:id", controller.getUser.bind(controller));
+		app.get("/users/:id", controller.getUserByID.bind(controller));
 		app.post("/users", controller.createUser.bind(controller));
 	}
 }

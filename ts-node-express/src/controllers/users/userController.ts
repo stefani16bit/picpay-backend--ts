@@ -15,7 +15,7 @@ export class UserController implements Component<UserController> {
 		this.service = this.container.resolve<UserService>("userService");
 	}
 
-	async getUser(req: Request, res: Response) {
+	async getUserByID(req: Request, res: Response) {
 		const id = req.params.id
 		if (id === undefined) {
 			res.status(400).json({ message: "Bad request" });
@@ -23,7 +23,7 @@ export class UserController implements Component<UserController> {
 		}
 	
 		const request = new GetUserRequest(parseInt(id, 10));
-		const response = await this.service.getUser(request);
+		const response = await this.service.getUserByID(request);
 
 		if (response instanceof Error) {
 			res.status(404).json({ message: response.message });
