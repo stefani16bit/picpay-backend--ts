@@ -1,5 +1,6 @@
 import validateCNPJ from "./cnpjValidator";
 import validateCPF from "./cpfValidator";
+import { PasswordCheckService, PasswordCheckStrength } from "./passwordCheckService";
 
 export class UserParamsValidators {
 	static validateName(name: string): boolean {
@@ -18,6 +19,14 @@ export class UserParamsValidators {
 		}
 
 		return false;
+	}
+
+	static validatePassowrd(password: string): boolean {
+
+		const passwordCheckService = new PasswordCheckService();
+		const strength = passwordCheckService.checkPasswordStrength(password);
+
+		return strength === PasswordCheckStrength.Ok || strength === PasswordCheckStrength.Strong;
 	}
 
     static validateCPF_CNPJ(CPF_CNPJ: string): boolean {
